@@ -2,26 +2,91 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+body {
+  @apply h-screen p-5 bg-slate-900  text-white;
+  box-shadow: inset 0 0 100px #00000060;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+.primary-gradient {
+  @apply bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent;
+}
+
+.secondary-gradient {
+  @apply bg-gradient-to-r from-blue-500 via-cyan-500 to-purple-600 bg-clip-text text-transparent;
+
+  background-size: 400%;
+}
+
+.bg-gradient-primary {
+  @apply bg-[length:250px_100px] bg-gradient-to-r from-blue-500 to-purple-600 bg-fixed bg-left hover:brightness-110 hover:bg-[left_10rem] hover:scale-105 hover:shadow-2xl duration-1000;
+}
+
+.card-wrapper {
+  @apply bg-black/20 bg-opacity-5 backdrop-blur p-5 rounded-[30px];
+}
+
+.button-primary {
+  @apply bg-gradient-to-r from-blue-500 via-cyan-500 to-purple-600;
+}
+.button-secondary {
+  @apply bg-gradient-to-r from-rose-500  to-purple-600;
+}
+.button-disabled {
+  @apply bg-gray-500/10 opacity-50 text-xs lg:text-sm rounded-full px-10 w-auto;
+  height: 50px;
+  position: relative;
+}
+
+.button {
+  @apply text-xs lg:text-sm rounded-full hover:bg-transparent hover:scale-110 hover:shadow-xl duration-500 w-[150px] p-6;
+  position: relative;
+}
+
+.button-motion {
+  background-size: 400%;
+  animation: animate 10s infinite;
+}
+
+@keyframes animate {
+  0% {
+    background-position: 0%;
+  }
+  50% {
+    background-position: 100%;
+  }
+  100% {
+    background-position: 0%;
   }
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.button-inner {
+  @apply rounded-full hover:bg-transparent hover:scale-110 hover:shadow-xl duration-500;
+
+  background-color: #0f172a;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  right: 2px;
+  bottom: 2px;
+  color: white;
+  text-align: center;
+  line-height: 46px;
+  cursor: pointer;
+  transition: 0.4s;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #f43f5e;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #1e293b;
 }

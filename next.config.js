@@ -1,4 +1,11 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  fontLoaders: [
+    { loader: "@next/font/google", options: { subsets: ["latin"] } },
+  ],
+  experimental: {
+    serverComponentsExternalPackages: ["mongoose"],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
