@@ -1,12 +1,11 @@
-import { Link } from "@/interfaces";
+import { ILink } from "@/interfaces";
 import mongoose, { Model, Schema } from "mongoose";
-
-export interface ILink extends Link {}
 
 const linkSchema = new Schema({
   description: { type: String, required: true },
   email: { type: String, required: true },
   isSubmitted: { type: Boolean, default: false },
+  url: { type: String, required: true },
 });
 
 const LinkModel: Model<ILink> =

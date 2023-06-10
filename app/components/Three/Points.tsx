@@ -7,13 +7,13 @@ import { Float } from "@react-three/drei";
 
 const Points = () => {
   const img = useLoader(THREE.TextureLoader, "/point.png");
-  const sep = 3;
+  const sep = 2;
 
   const bufferRef = useRef<THREE.BufferAttribute>(null);
   const pointsRef = useRef<THREE.Points>(null);
 
   let t = 0;
-  let f = 0.002;
+  let f = 0.0015;
   let a = 3;
 
   const graph = useCallback(
@@ -24,7 +24,7 @@ const Points = () => {
   );
 
   const amountX = 10;
-  const amountY = 50;
+  const amountY = 10;
   const numParticles = amountX * amountY;
 
   const positions = useMemo(() => {
@@ -43,8 +43,9 @@ const Points = () => {
   }, [numParticles, sep, graph]);
 
   useFrame((_, delta) => {
-    t += 5;
     if (!bufferRef.current || !pointsRef.current) return;
+
+    t += 8;
 
     const positions = bufferRef.current.array as number[];
 
@@ -84,6 +85,7 @@ const Points = () => {
           attach="material"
           map={img}
           size={0.2}
+          color="pink"
           sizeAttenuation
           alphaTest={0.1}
         />

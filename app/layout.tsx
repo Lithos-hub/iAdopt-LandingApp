@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Roboto } from "@next/font/google";
+import { Roboto } from "next/font/google";
 
 import { Experience, Navbar } from "@/app/components";
 
@@ -8,14 +8,6 @@ const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700", "900"],
   subsets: ["latin"],
 });
-
-export const metadata = {
-  title: "iAdopt - Inteligencia Artificial para protectoras de animales",
-  description: `Un chatbot es una herramienta que permite a los usuarios interactuar con un sistema mediante lenguaje natural. En este caso, usamos ChatGPT, un modelo de inteligencia artificial que genera respuestas a partir de un texto de entrada. iAdopt es una herramienta generadora de chatbots mediante inteligencia artificial para dar apoyo a las protectoras de animales de España en los procesos de adopción. Mediante un previo entrenamiento, el chatbot será capaz de realizar preguntas al adoptante directamente relacionadas con las circunstancias del animal en adopción.`,
-  icons: {
-    ico: "/favicon.ico",
-  },
-};
 
 export default function RootLayout({
   children,
@@ -27,8 +19,7 @@ export default function RootLayout({
       <body className={roboto.className}>
         <Navbar />
         <Experience />
-        <div className="dots" />
-        <main className="flex flex-col w-full mx-auto py-[5vh] lg:max-w-[70vw] h-full lg:justify-center lg:items-center lg:py-0">
+        <main className="flex flex-col w-full mx-auto py-[5vh] xl:max-w-[80vw] h-full xl:justify-center xl:items-center xl:py-0">
           {children}
         </main>
       </body>

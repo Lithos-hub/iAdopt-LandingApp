@@ -7,6 +7,10 @@ body {
   box-shadow: inset 0 0 100px #00000060;
 }
 
+canvas {
+  animation: fadeIn 5s ease-in-out;
+}
+
 .primary-gradient {
   @apply bg-gradient-to-r from-primary to-purple-500 bg-clip-text text-transparent;
 }
@@ -17,12 +21,57 @@ body {
   background-size: 400%;
 }
 
-.bg-gradient-primary {
+.bg-primary-gradient {
   @apply bg-[length:250px_100px] bg-gradient-to-r from-blue-500 to-purple-600 bg-fixed bg-left hover:brightness-110 hover:bg-[left_10rem] hover:scale-105 hover:shadow-2xl duration-1000;
 }
 
 .card-wrapper {
-  @apply bg-black/20 bg-opacity-5 backdrop-blur p-5 rounded-[30px];
+  @apply bg-black/20 bg-opacity-5 backdrop-blur p-10 rounded-[30px];
+}
+
+.chat__bot-message {
+  @apply bg-gradient-to-br from-primary to-fuchsia-500/50 p-2.5 xl:p-5 rounded-xl xl:rounded-[30px] text-sm xl:text-base xl:max-w-[25vw] text-left;
+}
+
+.chat__user-message {
+  @apply bg-gradient-to-br from-blue-500 to-cyan-500/50 p-2.5 xl:p-5 rounded-xl xl:rounded-[30px] text-sm xl:text-base xl:max-w-[25vw] text-right;
+}
+
+.chat__bot-loader {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  display: block;
+  margin: 2px auto;
+  position: relative;
+  box-sizing: border-box;
+  animation: animloader 1s infinite alternate
+    cubic-bezier(0.21, 0.53, 0.56, 0.8);
+}
+
+@keyframes animloader {
+  0% {
+    opacity: 0.1;
+    box-shadow: 14px 0 0 -2px #f43f5e, 38px 0 0 -2px #f43f5e,
+      -14px 0 0 -2px #f43f5e, -38px 0 0 -2px #f43f5e;
+  }
+  25% {
+    box-shadow: 14px 0 0 -2px #ec4899, 38px 0 0 -2px #ec4899,
+      -14px 0 0 -2px #ec4899, -38px 0 0 2px #ec4899;
+  }
+  50% {
+    box-shadow: 14px 0 0 -2px #d946ef, 38px 0 0 -2px #d946ef,
+      -14px 0 0 2px #d946ef, -38px 0 0 -2px #d946ef;
+  }
+  75% {
+    box-shadow: 14px 0 0 2px #a855f7, 38px 0 0 -2px #a855f7,
+      -14px 0 0 -2px #a855f7, -38px 0 0 -2px #a855f7;
+  }
+  100% {
+    opacity: 1;
+    box-shadow: 14px 0 0 -2px #a855f7, 38px 0 0 2px #a855f7,
+      -14px 0 0 -2px #a855f7, -38px 0 0 -2px #a855f7;
+  }
 }
 
 .button-primary {
@@ -31,15 +80,26 @@ body {
 .button-secondary {
   @apply bg-gradient-to-r from-rose-500  to-purple-600;
 }
+.button-success {
+  @apply bg-gradient-to-r from-green-500 to-cyan-500;
+}
 .button-disabled {
-  @apply bg-gray-500/10 opacity-50 text-xs lg:text-sm rounded-full px-10 w-auto;
+  @apply bg-gray-500/10 opacity-75 text-xs lg:text-sm rounded-full px-10 w-auto cursor-progress;
   height: 50px;
   position: relative;
 }
 
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .button {
-  @apply text-xs lg:text-sm rounded-full hover:bg-transparent hover:scale-110 hover:shadow-xl duration-500 w-[150px] p-6;
-  position: relative;
+  @apply text-xs lg:text-sm rounded-full hover:bg-transparent hover:scale-110 hover:shadow-xl duration-500 w-[150px] p-6 relative;
 }
 
 .button-motion {
@@ -60,7 +120,7 @@ body {
 }
 
 .button-inner {
-  @apply rounded-full hover:bg-transparent hover:scale-110 hover:shadow-xl duration-500;
+  @apply rounded-full hover:bg-transparent hover:scale-110 hover:shadow-xl duration-500 w-auto;
 
   background-color: #0f172a;
   position: absolute;
