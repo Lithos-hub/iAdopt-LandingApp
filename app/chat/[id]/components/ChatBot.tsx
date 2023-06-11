@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 
 import axios from "axios";
 import { Formik } from "formik";
@@ -22,6 +22,9 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
   const [isThinking, setIsThinking] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const chatboxRef = useRef<HTMLDivElement>(null);
+  const chatInputRef = useRef<HTMLTextAreaElement>(null);
+
   const [chat, setChat] = useState<Chat[] | null>([
     {
       role: "assistant",
@@ -35,11 +38,14 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
   ]);
 
   const scrollToBottom = () => {
-    const chatBox = document.getElementById("chat-box");
-    if (chatBox) chatBox.scrollTop = chatBox.scrollHeight;
+    if (chatboxRef.current) {
+      chatboxRef.current.scrollTop = chatboxRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => {
+    scrollToBottom();
+    chatInputRef.current?.focus();
     // If the chat content message contains "**END**", then the chat is over
     if (chat) {
       const lastMessage = chat.at(-1);
@@ -69,10 +75,11 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
     </section>
   ) : (
     <section className="bg-gradient-to-br from-primary to-purple-500 p-[2px] rounded-[30px] w-[95vw] h-[calc(100vh-72px)] xl:w-[70vw] xl:h-[80vh]">
-      <div className="bg-[#101010] rounded-[30px] flex flex-col h-full justify-between">
+      <div className="bg-[#151515] rounded-[30px] flex flex-col h-full justify-between">
         <div
+          ref={chatboxRef}
           id="chat-box"
-          className="flex flex-col gap-2.5 h-full p-2.5 mr-2.5 xl:mr-5 xl:p-5 overflow-y-auto"
+          className="flex flex-col gap-2.5 h-full p-2.5 mr-2.5 xl:m-5 xl:p-5 overflow-y-auto relative"
         >
           {chat &&
             chat.map((message, index) => (
@@ -96,7 +103,7 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
               </div>
             ))}
           {isThinking && (
-            <div className="w-full py-5 mt-auto">
+            <div className="sticky mx-auto bottom-0 left-1/2 -translate-x-1/2">
               <div className="chat__bot-loader" />
             </div>
           )}
@@ -119,17 +126,11 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
 
                 values.answer = "";
 
-                scrollToBottom();
-
                 const { data } = await axios.post("/api/gpt", {
                   animalDescription,
                   messages,
                 });
                 setChat(data.chat);
-                scrollToBottom();
-
-                const chatInput = document.getElementById("chat-input");
-                if (chatInput) chatInput.focus();
               } catch (error: unknown) {
                 throw new Error(error as string);
               } finally {
@@ -147,11 +148,12 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
                 className="flex flex-col xl:flex-row items-center gap-2.5 xl:gap-5"
               >
                 <textarea
+                  ref={chatInputRef}
                   id="chat-input"
                   {...getFieldProps(values.answer)}
                   name="answer"
                   value={values.answer}
-                  disabled={isSubmitting}
+                  disabled={isThinking}
                   className="w-full border-2 bg-[#202020] text-justify border-slate-500/20 rounded-xl p-5 h-[140px] focus:outline resize-none z-50"
                   placeholder="Escribe aquí tu respuesta."
                 />

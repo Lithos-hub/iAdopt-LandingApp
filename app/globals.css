@@ -30,11 +30,11 @@ canvas {
 }
 
 .chat__bot-message {
-  @apply bg-gradient-to-br from-primary to-fuchsia-500/50 p-2.5 xl:p-5 rounded-xl xl:rounded-[30px] text-sm xl:text-base xl:max-w-[25vw] text-left;
+  @apply bg-gradient-to-br from-primary to-fuchsia-500/50 p-2.5 xl:p-5 rounded-xl xl:rounded-2xl text-sm xl:text-base xl:max-w-[25vw] text-left;
 }
 
 .chat__user-message {
-  @apply bg-gradient-to-br from-blue-500 to-cyan-500/50 p-2.5 xl:p-5 rounded-xl xl:rounded-[30px] text-sm xl:text-base xl:max-w-[25vw] text-right;
+  @apply bg-gradient-to-br from-blue-500 to-cyan-500/50 p-2.5 xl:p-5 rounded-xl xl:rounded-2xl text-sm xl:text-base xl:max-w-[25vw] text-right;
 }
 
 .chat__bot-loader {

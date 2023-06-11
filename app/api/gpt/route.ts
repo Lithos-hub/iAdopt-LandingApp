@@ -111,18 +111,31 @@ export async function POST(req: Request) {
 
   const completion = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
+    max_tokens: 150,
+    temperature: 0.5,
     messages: [
       {
         role: "system",
-        content: `Eres una IA llamada Lilu. Tu misión es entrevistar a un potencial adoptante de un perro o un gato. Se te proporcionará
-      una descripción del animal. Tu objetivo es entrevistar al adoptante para determinar si es un buen candidato para adoptar al animal. Realiza unas 20 preguntas en base a la descripción del mismo. Las preguntas deben ser abiertas, y conforme el adoptante responda, deberás hacer preguntas de seguimiento. Cuando consideres que tienes suficiente información, puedes terminar la entrevista. Para ello, debes escribir literalmente: **END
+        content: `Eres una IA llamada Lilu. Tu misión es entrevistar a un potencial adoptante un animal. Se te proporcionará una descripción del animal. Tu objetivo es entrevistar al adoptante para determinar si es un buen candidato para adoptar al animal, realizando preguntas en base a la descripción del mismo, no hagas preguntas referentes al proceso de adopción o para saber más acerca del animal, ya que todo se va a centrar en si el adoptante es apto o no para adoptarlo. Al principio, harás preguntas para conocer al adoptante, y después, en base a la descripción del animal y la información del adoptante, harás preguntas para determinar si es un buen candidato para adoptar al animal. 
+        
+        Si el adoptante te lanza cualquier tipo de pregunta, deberás contestar lo siguiente:
+        
+        'Lo siento, no puedo responder a esa pregunta. Soy un modelo de inteligencia artificial entrenado para entrevistar a potenciales adoptantes de animales.'
+        
+        Y continuarás con la entrevista.
+        
+        La descripción del animal es la siguiente:
+        ${animalDescription}
       
-      La descripción del animal es la siguiente:
-      ${animalDescription}
+      
+        -----
+
+        Cuando consideres que tienes suficiente información, puedes terminar la entrevista. Para ello, debes escribir literalmente: '¡Estupendo! Creo que tengo toda la información necesaria para realizar una valoración. Ojalá puedas tener a [nombre del animal] contigo muy pronto. Una vez tengamos el resultado, la protectora se pondrá en contacto contigo. ¡Mucha suerte y un saludo! **END'
       `,
       },
       ...messages,
     ],
+    stop: ["END"],
   });
 
   const gptResponse = completion.data.choices[0].message;

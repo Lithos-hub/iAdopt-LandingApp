@@ -8,31 +8,24 @@ import axios from "axios";
 const ChatPage = ({ params }: { params: { id: string } }) => {
   const [isStarted, setIsStarted] = useState(false);
   const [description, setDescription] = useState("");
-  const [isAlreadyDone, setIsAlreadyDone] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
-  useEffect(() => {
-    const getAnimalDescription = async () => {
-      const { data } = await axios.get(`/api/link/${params.id}`);
-      console.log(data);
-      setDescription(data.description);
-      setIsAlreadyDone(data.isSubmitted);
-    };
-    getAnimalDescription();
-  });
+  const onStart = async () => {
+    // Check if the user has already done the interview
+    const { data } = await axios.get(`/api/link/${params.id}`);
+    setDescription(data.description);
+    setIsSubmitted(data.isSubmitted);
 
-  useEffect(() => {
-    // If the user has already done the interview, we don't want to update the document
-    if (isAlreadyDone) return;
-
-    const updateDocument = async () => {
+    // Update the document to set isSubmitted = true
+    if (!isSubmitted) {
       await axios.patch(`/api/link/${params.id}`);
-    };
-    updateDocument();
-  }, [isAlreadyDone, params.id]);
+      setIsStarted(true);
+    }
+  };
 
   return (
     <section className="flex flex-col justify-center items-center">
-      {isAlreadyDone ? (
+      {isSubmitted ? (
         <section>
           <article className="text-center flex flex-col gap-5">
             <h2 className="text-5xl primary-gradient font-bold">
@@ -54,7 +47,7 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
           <ChatBot animalDescription={description} id={params.id} />
         </Suspense>
       ) : (
-        <InformationCard onStart={() => setIsStarted(true)} />
+        <InformationCard onStart={onStart} />
       )}
     </section>
   );
