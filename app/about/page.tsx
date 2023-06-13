@@ -23,16 +23,16 @@ const AboutPage = () => {
       {
         title: "¿Qué hacemos?",
         description: [
-          `Proporcionamos una manera de <strong>agilizar</strong> los procesos de adopción de animales mediante el uso de <strong>inteligencia artificial</strong> de forma totalmente gratuita.`,
+          `Proporcionamos una manera de <strong>agilizar</strong> los procesos de adopción de animales mediante el uso de <strong class="primary-gradient">inteligencia artificial</strong> de forma <strong class="primary-gradient">totalmente gratuita</strong>.`,
         ],
         icons: ["fast"],
       },
       {
         title: "¿Cómo lo hacemos?",
         description: [
-          `Primero, entrenamos a nuestro modelo de <strong>ChatGPT</strong> con la descripción del animal para que la IA pueda realizar preguntas al adoptante directamente relacionadas a las circunstancias del animal.`,
-          `Segundo, generamos un <strong>chatbot</strong> con el modelo entrenado, el cual será accesible a través de un <strong>enlace único</strong>.`,
-          `Finalmente, deberás proporcionar ese enlace al adoptante para que pueda afrontar la <strong>entrevista de adopción</strong>. Una vez terminado el proceso, recibirás un correo electrónico con la valoración de la entrevista.`,
+          `Primero, entrenamos a nuestro modelo de <strong class="primary-gradient">ChatGPT</strong> con la descripción del animal para que la IA pueda realizar preguntas al adoptante directamente relacionadas a las circunstancias del animal.`,
+          `Segundo, generamos un <strong class="primary-gradient">chatbot</strong> con el modelo entrenado, el cual será accesible a través de un <strong class="primary-gradient">enlace único</strong>.`,
+          `Finalmente, deberás proporcionar ese enlace al adoptante para que pueda afrontar la <strong class="primary-gradient">entrevista de adopción</strong>. Una vez terminado el proceso, recibirás un correo electrónico con la valoración de la entrevista.`,
         ],
         icons: ["cog", "chat", "user"],
       },
@@ -42,8 +42,8 @@ const AboutPage = () => {
           `Creemos que la tecnología y la inteligencia artificial pueden
         ser un gran aliado para organizaciones como las protectoras de
         animales, ya que sabemos que los recursos y el tiempo
-        son limitados. Con esta herramienta, esperamos que las adopciones
-        sean más rápidas y eficientes y, por supuesto, que los animales encuentren el mejor hogar posible.`,
+        son limitados. Con esta herramienta, esperamos que las <strong class="primary-gradient">adopciones
+        sean más rápidas y eficientes</strong> y, por supuesto, que los animales encuentren <strong class="primary-gradient">el mejor hogar posible</strong>.`,
         ],
         icons: ["robot"],
       },
@@ -57,39 +57,38 @@ const AboutPage = () => {
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
       </Head>
-      <section className="flex flex-col gap-5 py-10 h-auto xl:py-0 xl:justify-center xl:items-center">
-        <h2 className="primary-gradient text-4xl text-center xl:text-7xl font-bold">
-          iAdopt
-        </h2>
 
-        {data.map((item, index) => (
-          <article
-            key={index}
-            className="flex flex-col xl:flex-row items-center justify-center gap-10"
-          >
-            <h3 className="text-2xl xl:text-3xl text-center xl:text-right font-bold text-primary xl:w-[25vw]">
-              {item.title}
-            </h3>
-            <div className="card-wrapper w-rounded-full">
-              <ul className="text-white flex flex-col gap-2">
-                {item.icons.map((icon, index) => (
-                  <li className="flex gap-5 items-center" key={index}>
-                    <Icon name={icon} className="w-10 h-10" />
-                    <h4 className="text-white xl:text-lg text-justify xl:w-[50vw]">
-                      <TextHtml html={item.description[index]} />
-                    </h4>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </article>
-        ))}
-        <div className="mx-auto">
-          <Button variant="primary" onClick={() => router.back()}>
-            Volver
-          </Button>
-        </div>
-      </section>
+      <h2 className="primary-gradient text-4xl text-center xl:text-7xl font-bold">
+        iAdopt
+      </h2>
+
+      {data.map((item, index) => (
+        <article
+          key={index}
+          className="flex flex-col xl:flex-row items-center justify-center gap-10"
+        >
+          <h3 className="text-2xl xl:text-3xl text-center xl:text-right font-bold text-primary xl:w-[25vw]">
+            {item.title}
+          </h3>
+          <div className="card-wrapper w-rounded-full">
+            <ul className="text-white flex flex-col gap-2">
+              {item.icons.map((icon, index) => (
+                <li className="flex gap-5 items-center" key={index}>
+                  <Icon name={icon} className="w-10 h-10" />
+                  <h4 className="text-white xl:text-lg text-justify xl:w-[50vw]">
+                    <TextHtml html={item.description[index]} />
+                  </h4>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </article>
+      ))}
+      <div className="mx-auto">
+        <Button variant="primary" onClick={() => router.back()}>
+          Volver
+        </Button>
+      </div>
     </>
   );
 };

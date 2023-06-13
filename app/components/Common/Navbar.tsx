@@ -6,7 +6,7 @@ import Button from "./Button";
 import Icon from "./Icon";
 const Navbar = () => {
   return (
-    <header className="absolute top-0 left-0 w-full z-50 p-5">
+    <header className="absolute top-0 left-0 w-full z-40 p-5">
       <nav className="flex justify-between">
         <Link href="/">
           <h1 className="primary-gradient text-2xl lg:text-3xl font-light">

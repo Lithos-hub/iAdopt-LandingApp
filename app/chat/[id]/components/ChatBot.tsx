@@ -1,15 +1,18 @@
 "use client";
 
 import React, { FC, useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 import axios from "axios";
 import { Formik } from "formik";
 
 import { Icon } from "@/app/components";
+import { AdopterData } from "@/interfaces";
 
 interface Props {
   animalDescription: string;
   id: string;
+  adopterData: AdopterData;
 }
 
 interface Chat {
@@ -17,23 +20,25 @@ interface Chat {
   role: "assistant" | "user";
 }
 
-const ChatBot: FC<Props> = ({ animalDescription, id }) => {
+const ChatBot: FC<Props> = ({ animalDescription, id, adopterData }) => {
   const [chatIsOver, setChatIsOver] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEnding, setIsEnding] = useState(false);
 
   const chatboxRef = useRef<HTMLDivElement>(null);
   const chatInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const [chat, setChat] = useState<Chat[] | null>([
+  const [chat, setChat] = useState<Chat[]>([
     {
       role: "assistant",
       content:
-        "Hola, soy Lilu 😊. Te acompañaré en esta entrevista para evaluar si eres un buen candidato para adoptar a este animal.",
+        "Hola, soy Lilu 😊. Te acompañaré en esta entrevista para asegurarnos de que eres el mejor candidato para adoptar a este animal.",
     },
     {
       role: "assistant",
-      content: "Primero, cuéntame un poco sobre ti. ¿Cuál es tu nombre?",
+      content:
+        "Primero, cuéntame un poco sobre ti. Dime tu nombre, edad, ciudad o provincia donde resides y a qué te dedicas.",
     },
   ]);
 
@@ -46,25 +51,76 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
   useEffect(() => {
     scrollToBottom();
     chatInputRef.current?.focus();
-    // If the chat content message contains "**END**", then the chat is over
+    // If the chat content message contains "**", then the chat is over
     if (chat) {
       const lastMessage = chat.at(-1);
-      if (lastMessage?.content.includes("**END**")) {
-        setChatIsOver(true);
+
+      const isEnding =
+        lastMessage?.content.toLowerCase().includes("**") ||
+        lastMessage?.content.toLowerCase().includes("gracias") ||
+        lastMessage?.content.toLowerCase().includes("suerte");
+
+      if (isEnding) {
+        setIsEnding(true);
       }
     }
   }, [chat]);
 
-  return chatIsOver ? (
+  useEffect(() => {
+    if (!isEnding) return;
+
+    const sendResults = async () => {
+      const { data } = await axios.get(`/api/link/${id}`);
+      const email = data.email;
+
+      const formattedChat = chat
+        ?.map((message) => {
+          return `${
+            message.role === "assistant" ? "Entrevistador" : `Adoptante`
+          }: ${message.content}`;
+        })
+        .join("\n\n");
+
+      const { data: valoration } = await axios.post("/api/gpt/valoration", {
+        formattedChat,
+      });
+
+      await axios.post("/api/email", {
+        adopterData,
+        email,
+        valoration,
+        formattedChat,
+      });
+
+      setChatIsOver(true);
+      setIsEnding(false);
+    };
+
+    sendResults();
+  }, [adopterData, chat, id, isEnding]);
+
+  return isEnding ? (
     <section>
       <article className="text-center flex flex-col gap-5">
         <h2 className="text-5xl primary-gradient font-bold">
           ¡Gracias por tu tiempo!
         </h2>
+        <h3 className="text-primary text-2xl">
+          Por favor, no cierres esta ventana. Estamos procesando toda la
+          información, esto puede demorarse unos instantes.
+        </h3>
+        <div className="sticky mx-auto bottom-0 left-1/2 -translate-x-1/2">
+          <div className="chat__bot-loader" />
+        </div>
+      </article>
+    </section>
+  ) : chatIsOver ? (
+    <section>
+      <article className="text-center flex flex-col gap-5">
         <div className="flex flex-col gap-2.5 font-light">
-          <h3 className="text-xl">
-            Ya hemos terminado la entrevista. Puedes cerrar esta pestaña.
-          </h3>
+          <h2 className="text-5xl primary-gradient font-bold">
+            ¡Ya hemos terminado la entrevista! Puedes cerrar esta ventana.
+          </h2>
           <h3 className="text-xl">
             Revisaremos tus respuestas y nos pondremos en contacto contigo en
             cuanto sea posible para darte una respuesta. ¡Mucha suerte!
@@ -74,12 +130,27 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
       </article>
     </section>
   ) : (
-    <section className="bg-gradient-to-br from-primary to-purple-500 p-[2px] rounded-[30px] w-[95vw] h-[calc(100vh-72px)] xl:w-[70vw] xl:h-[80vh]">
-      <div className="bg-[#151515] rounded-[30px] flex flex-col h-full justify-between">
+    <motion.section
+      initial={{
+        opacity: 0,
+        width: "0%",
+        height: "0%",
+      }}
+      animate={{
+        opacity: 1,
+        width: "100%",
+        height: "100%",
+      }}
+      transition={{
+        duration: 1,
+      }}
+      className="bg-gradient-to-br from-primary to-purple-500 p-[2px] rounded-[30px] h-screen z-50"
+    >
+      <div className="bg-[#151515] rounded-[30px] flex flex-col justify-between h-full">
         <div
           ref={chatboxRef}
           id="chat-box"
-          className="flex flex-col gap-2.5 h-full p-2.5 mr-2.5 xl:m-5 xl:p-5 overflow-y-auto relative"
+          className="flex flex-col gap-2.5 h-full p-2.5 m-2.5 xl:m-5 xl:p-5 overflow-y-auto relative"
         >
           {chat &&
             chat.map((message, index) => (
@@ -126,7 +197,7 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
 
                 values.answer = "";
 
-                const { data } = await axios.post("/api/gpt", {
+                const { data } = await axios.post("/api/gpt/interview", {
                   animalDescription,
                   messages,
                 });
@@ -173,7 +244,7 @@ const ChatBot: FC<Props> = ({ animalDescription, id }) => {
           </Formik>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

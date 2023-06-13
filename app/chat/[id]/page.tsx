@@ -4,15 +4,19 @@ import { Suspense, useEffect, useState } from "react";
 import { ChatBot, InformationCard } from "./components";
 
 import axios from "axios";
+import { AdopterData } from "@/interfaces";
 
 const ChatPage = ({ params }: { params: { id: string } }) => {
   const [isStarted, setIsStarted] = useState(false);
+
+  const [adopterData, setAdopterData] = useState({} as AdopterData); // [key: string]: string
   const [description, setDescription] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const onStart = async () => {
+  const onStart = async (values: Record<string, string>) => {
     // Check if the user has already done the interview
     const { data } = await axios.get(`/api/link/${params.id}`);
+    setAdopterData(values as AdopterData);
     setDescription(data.description);
     setIsSubmitted(data.isSubmitted);
 
@@ -24,7 +28,7 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
   };
 
   return (
-    <section className="flex flex-col justify-center items-center">
+    <section className="w-full h-full flex flex-col items-center justify-center">
       {isSubmitted ? (
         <section>
           <article className="text-center flex flex-col gap-5">
@@ -44,7 +48,11 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
         </section>
       ) : isStarted ? (
         <Suspense fallback={null}>
-          <ChatBot animalDescription={description} id={params.id} />
+          <ChatBot
+            animalDescription={description}
+            adopterData={adopterData}
+            id={params.id}
+          />
         </Suspense>
       ) : (
         <InformationCard onStart={onStart} />

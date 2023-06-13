@@ -1,5 +1,7 @@
 # iAdopt
 
+![iAdopt](https://user-images.githubusercontent.com/57297760/245073065-da61ba7c-6dfc-43c9-982f-9e325aa09157.jpg)
+
 iAdopt is a chatbot tool that helps animal shelters to find the best match for their animals and potential adopters using ChatGPT.
 
 ## Installation and setup

@@ -3,8 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply h-screen p-5 bg-slate-900  text-white;
-  box-shadow: inset 0 0 100px #00000060;
+  @apply bg-slate-900 text-white;
 }
 
 canvas {

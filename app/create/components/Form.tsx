@@ -55,7 +55,8 @@ const Form: FC<Props> = ({ onSubmit }) => {
                 <p className="text-xs lg:text-base">
                   Una vez que el adoptante haya completado el proceso, te
                   enviaremos la valoración a la dirección que indiques a
-                  continuación.
+                  continuación. Si no lo ves, ¡recuerda revisar tu buzón de
+                  spam!
                 </p>
                 <input
                   id="email-input"

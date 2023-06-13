@@ -1,13 +1,29 @@
+import React, { FC, useMemo, useState } from "react";
 import { Button } from "@/app/components";
-import React, { FC } from "react";
+import { Formik } from "formik";
+
+import * as Yup from "yup";
 
 interface Props {
-  onStart: () => void;
+  onStart: (values: Record<string, string>) => void;
 }
 
 const InformationCard: FC<Props> = ({ onStart }) => {
+  const [isStarting, setIsStarting] = useState(false);
+
+  const validationSchema = useMemo(
+    () =>
+      Yup.object().shape({
+        email: Yup.string()
+          .email("Introduce un correo electrónico válido")
+          .required("Introduce un correo electrónico"),
+        fullname: Yup.string().required("Introduce tu nombre completo"),
+      }),
+    []
+  );
+
   return (
-    <div className="w-[50vw] mx-auto p-10 bg-slate-900 rounded-[30px] flex flex-col gap-5 text-justify">
+    <div className="w-full pt-20 xl:pt-10 xl:w-[80vw] mx-auto p-10 bg-slate-900 xl:rounded-[30px] flex flex-col gap-5 text-justify h-full xl:h-auto xl:min-h-min max-h-screen overflow-y-auto">
       <h2 className="text-3xl primary-gradient font-bold">
         Bienvenido a tu entrevista de adopción
       </h2>
@@ -29,6 +45,10 @@ const InformationCard: FC<Props> = ({ onStart }) => {
       </div>
       <article>
         <ul className="flex flex-col gap-2.5 text-xl pl-5 font-light">
+          <li className="list-disc">
+            Primero, facilítanos abajo tu email y nombre completo para que la
+            protectora pueda identificarte.
+          </li>
           <li className="list-disc">
             No almacenaremos ninguna información que proporciones, pero la
             protectora podrá ver la relación de preguntas y respuestas una vez
@@ -53,15 +73,76 @@ const InformationCard: FC<Props> = ({ onStart }) => {
           </li>
         </ul>
       </article>
-      <p className="text-center text-secondary">
-        ¡Mucha suerte! Esperamos que pronto puedas disfrutar con tu nuevo
-        compañero 🐶
-      </p>
-      <div className="flex justify-center">
-        <Button variant="primary" onClick={onStart}>
-          Comenzar
-        </Button>
-      </div>
+
+      <Formik
+        onSubmit={(values) => {
+          setIsStarting(true);
+          onStart(values);
+        }}
+        validateOnMount
+        initialValues={{ email: "", fullname: "" }}
+        validationSchema={validationSchema}
+      >
+        {({ values, errors, handleSubmit, isValid, getFieldProps }) => (
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col justify-center gap-5 w-full"
+          >
+            <div className="flex justify-center gap-5">
+              <div className="flex flex-col gap-10 w-full">
+                <div className="flex flex-col gap-2.5">
+                  <input
+                    type="email"
+                    {...getFieldProps(values.email)}
+                    name="email"
+                    value={values.email}
+                    placeholder="ejemplo@ejemplo.com"
+                    className="text-sm w-full border-2 border-slate-500/20 bg-[#05050560] backdrop-blur rounded-xl p-2 focus:outline z-50"
+                  />
+                  {errors.email && (
+                    <small className="text-red-500 text-sm">
+                      {errors.email}
+                    </small>
+                  )}
+                </div>
+              </div>
+              <div className="flex flex-col gap-10 w-full">
+                <div className="flex flex-col gap-2.5">
+                  <input
+                    {...getFieldProps(values.fullname)}
+                    name="fullname"
+                    value={values.fullname}
+                    placeholder="Escribe tu nombre completo"
+                    className="text-sm w-full border-2 border-slate-500/20 bg-[#05050560] backdrop-blur rounded-xl p-2 focus:outline z-50"
+                  />
+                  {errors.fullname && (
+                    <small className="text-red-500 text-sm">
+                      {errors.fullname}
+                    </small>
+                  )}
+                </div>
+              </div>
+            </div>
+            <div>
+              <hr className="opacity-20 my-5" />
+
+              <p className="text-center text-secondary">
+                ¡Mucha suerte! Esperamos que pronto puedas disfrutar con tu
+                nuevo compañero 🐶
+              </p>
+              <div className="flex justify-center">
+                <Button
+                  variant={isStarting || !isValid ? "disabled" : "primary"}
+                  disabled={isStarting || !isValid}
+                  type="submit"
+                >
+                  Comenzar
+                </Button>
+              </div>
+            </div>
+          </form>
+        )}
+      </Formik>
     </div>
   );
 };

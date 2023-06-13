@@ -12,12 +12,12 @@ export async function GET(
 
     const fullUrl = `${process.env.BASE_URL}/chat/${id}`;
 
-    const { description, isSubmitted } = (await LinkModel.findOne({
+    const { description, isSubmitted, email } = (await LinkModel.findOne({
       url: fullUrl,
     })) as LinkDTO;
 
     return NextResponse.json({
-      message: "Fetched description",
+      email,
       description,
       isSubmitted,
     });
