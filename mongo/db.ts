@@ -9,7 +9,7 @@ const options: any = {
 export const connectDB = async () => {
   try {
     if (connection.readyState === 0) {
-      console.log("Connecting to ", DB_URI);
+      console.log("Connecting to: ", DB_URI);
       await connect(DB_URI, options);
     }
   } catch (error) {
@@ -20,7 +20,7 @@ export const connectDB = async () => {
 export const disconnectDB = async () => {
   try {
     if (connection.readyState !== 0) {
-      console.log("Disconnecting from ", DB_URI);
+      console.log("Disconnecting from: ", DB_URI);
       await connection.close();
     }
   } catch (error) {
