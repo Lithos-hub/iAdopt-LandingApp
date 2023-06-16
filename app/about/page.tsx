@@ -5,14 +5,10 @@ import { useMemo } from "react";
 import { Button, Icon } from "@/app/components";
 import TextHtml from "./components/TextHtml";
 import { useRouter } from "next/navigation";
-import Head from "next/head";
 
 const metadata = {
   title: "iAdopt - Acerca de nosotros",
   description: `Proporcionamos una manera de agilizar los procesos de adopción de animales mediante el uso de inteligencia artificial de forma totalmente gratuita.`,
-  icons: {
-    ico: "/favicon.ico",
-  },
 };
 
 const AboutPage = () => {
@@ -53,10 +49,10 @@ const AboutPage = () => {
 
   return (
     <>
-      <Head>
+      <head>
         <title>{metadata.title}</title>
         <meta name="description" content={metadata.description} />
-      </Head>
+      </head>
 
       <h2 className="primary-gradient text-4xl text-center xl:text-7xl font-bold">
         iAdopt

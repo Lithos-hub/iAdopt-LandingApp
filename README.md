@@ -18,6 +18,8 @@ DB_URI=mongodb://... // for Mongo ATLAS db
 # DB_URI=mongodb://localhost:27017/iadoptv2 // for local db
 API_URL=http://localhost:3000/api
 BASE_URL=http://localhost:3000
+SENDGRID_FROM_EMAIL=example@example.com // email address that will send the emails
+SENDGRID_API_KEY=SG. ... // sendgrid api key
 ```
 
 ## Usage

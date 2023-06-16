@@ -7,18 +7,6 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-// const EXAMPLE_MESSAGES = [
-//   {
-//     role: "assistant",
-//     content:
-//       "Hola, soy Lilu. Te acompañaré en esta entrevista para evaluar si eres un buen candidato para adoptar a este animal.",
-//   },
-//   {
-//     role: "assistant",
-//     content: "Primero, cuéntame un poco sobre ti. ¿Cuál es tu nombre?",
-//   },
-// ];
-
 export async function POST(req: Request) {
   const { formattedChat } = await req.json();
 
@@ -29,8 +17,7 @@ export async function POST(req: Request) {
     messages: [
       {
         role: "system",
-        content: `Tu misión será evaluar a un adoptante potencial para un perro o un gato a partir de una conversación que se te va a facilitar. El objetivo es evaluar si el adoptante es un buen candidato para adoptar al animal. Para ello, deberás evaluar la conversación y dar una valoración final. Analiza las respuestas del adoptante y evalúa si es un buen candidato para adoptar al animal en función de lo elaboradas que sean sus respuestas y del tipo de respuesta. Califícalo con una nota del 1 al 10, siendo 1 un candidato muy malo y 10 un candidato excelente.
-      `,
+        content: `Quiero que evalues una entrevista de adopción animal a partir de una conversación que se te va a facilitar. Quiero que evalúes si el adoptante es un buen candidato para adoptar al animal. Para ello, quiero que evalúes la conversación y des una valoración final. Analiza las respuestas del adoptante y evalúa si es un buen candidato para adoptar al animal en función de lo elaboradas que sean sus respuestas y del tipo de respuesta. Califícalo con una nota del 1 al 10, siendo 1 un candidato muy malo y 10 un candidato excelente.`,
       },
       {
         role: "user",

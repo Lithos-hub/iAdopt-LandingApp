@@ -64,9 +64,9 @@ const InformationCard: FC<Props> = ({ onStart }) => {
               COMENZAR
             </strong>
             , este enlace{" "}
-            <span className="text-red-500">
+            <strong className="text-red-500">
               ya no será valido y no podrás volver a hacer la entrevista.
-            </span>{" "}
+            </strong>{" "}
             En caso de que ocurra algún error y necesites reiniciar el proceso,
             ponte en contacto con la protectora para que soliciten un nuevo
             enlace.
@@ -123,7 +123,7 @@ const InformationCard: FC<Props> = ({ onStart }) => {
                 </div>
               </div>
             </div>
-            <div>
+            <div className="flex flex-col gap-5">
               <hr className="opacity-20 my-5" />
 
               <p className="text-center text-secondary">

@@ -1,24 +1,30 @@
-import { Hero } from "@/app/components";
-import Head from "next/head";
+import Link from "next/link";
 
-const metadata = {
-  title: "iAdopt - Inteligencia Artificial para protectoras de animales",
-  description: `Un chatbot es una herramienta que permite a los usuarios interactuar con un sistema mediante lenguaje natural. En este caso, usamos ChatGPT, un modelo de inteligencia artificial que genera respuestas a partir de un texto de entrada. iAdopt es una herramienta generadora de chatbots mediante inteligencia artificial para dar apoyo a las protectoras de animales de España en los procesos de adopción. Mediante un previo entrenamiento, el chatbot será capaz de realizar preguntas al adoptante directamente relacionadas con las circunstancias del animal en adopción.`,
-  icons: {
-    ico: "/favicon.ico",
-  },
+import { Button } from "@/app/components";
+
+const Hero = () => {
+  return (
+    <section className="z-40 h-screen max-w-screen flex flex-col items-center justify-center gap-5">
+      <h1 className="primary-gradient text-7xl lg:text-[200px] font-bold py-20">
+        <span className="text-6xl lg:text-[150px]">i</span>Adopt
+      </h1>
+      <h2 className="text-2xl tracking-wide font-light text-center">
+        Tu{" "}
+        <span className="primary-gradient font-bold">
+          asistente inteligente
+        </span>{" "}
+        para procesos de{" "}
+        <span className="primary-gradient font-bold">adopción animal</span>
+      </h2>
+      <div className="flex gap-5">
+        <Link href="/create">
+          <Button variant="secondary">Comenzar</Button>
+        </Link>
+      </div>
+    </section>
+  );
 };
 
 export default function HomePage() {
-  return (
-    <>
-      <Head>
-        <title>{metadata.title}</title>
-        <meta name="description" content={metadata.description} />
-        <link rel="icon" href={metadata.icons.ico} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-      </Head>
-      <Hero />
-    </>
-  );
+  return <Hero />;
 }

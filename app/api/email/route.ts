@@ -17,39 +17,49 @@ const getEmailTemplate = (
   valoration: string,
   adopterData: AdopterData
 ) => `
-<main
-    style="
-    background: #202020;
-    margin: 0;
-    padding: 20px;
-    border-radius: 25px;
-    color: white;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
-        Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol';">
+    <div align="center" style="
+      background: #0f172a; 
+      padding: 15px; 
+      border-radius: 30px;       
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+      'Segoe UI Symbol'">
 
-        <div style="display: flex; justify-content: center;">
-            <img src="cid:logo" style="
-            border-radius: 25px;
-            margin: 0 auto;
-            width: 50vw;
-            " />
-        </div>
+        <img
+          src="cid:logo"
+          style="margin: 0 auto; width: 100%; border: 1px solid #ffffff20;  border-radius: 30px; min-height: 100px; margin-bottom: 15px;"
+        />
 
-        <hr />
+      <div style="background: white; padding: 30px; border-radius: 30px; box-shadow: 0px 20px 50px #50505050;">
 
-        <h2>
-        ¡Hola! El adoptante ${adopterData.fullname} con la dirección de correo ${adopterData.email} ha completado la entrevista de adopción, a continuación podrás ver la entrevista completa junto a nuestra valoración:
-        </h2>
+      <p>
+        ¡Hola! El adoptante <strong style="color: #f43f5e;">${adopterData.fullname}</strong> con la dirección de correo electrónico
+        <strong>${adopterData.email}</strong> ha completado la entrevista de adopción. 
+        
+        <br /> <br />
 
-        <p>
-            ${chat}
-        </p>
+        A continuación podrás ver la entrevista completa junto a nuestra
+        valoración.
+      </p>
 
-        <hr />
+      <h2 style="color: #f43f5e; text-align: center; text-transform: uppercase;">Transcripción de la conversación</h2>
 
-        <h3>${valoration}</h3>
-</main>
+      <p>
+        ${chat}
+      </p>
+
+      <hr style="opacity: 0.5;" />
+
+      <h2 style="color: #f43f5e; text-align: center; text-transform: uppercase;">Análisis y valoración</h2>
+
+      <p>${valoration}</p>
+    </div>
 `;
 
 export async function POST(req: Request) {
@@ -67,7 +77,7 @@ export async function POST(req: Request) {
       attachments: [
         {
           filename: "email-banner.jpg",
-          path: "https://user-images.githubusercontent.com/57297760/245075718-31c0c86c-8038-4159-bb03-22556b18b602.jpg",
+          path: "https://user-images.githubusercontent.com/57297760/246323491-d1e2c9c0-d647-4e66-9f6c-81980fad6e25.jpg",
           cid: "logo",
         },
       ],
