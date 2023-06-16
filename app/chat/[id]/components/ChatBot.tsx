@@ -51,7 +51,7 @@ const ChatBot: FC<Props> = ({ animalDescription, id, adopterData }) => {
   useEffect(() => {
     scrollToBottom();
     chatInputRef.current?.focus();
-    // If the chat content message contains "**", then the chat is over
+
     if (chat) {
       const lastMessage = chat.at(-1);
 
