@@ -56,6 +56,8 @@ const ChatBot: FC<Props> = ({ animalDescription, id, adopterData }) => {
       const lastMessage = chat.at(-1);
 
       const isEnding =
+        (chat.length > 5 &&
+          lastMessage?.content.toLowerCase().includes("lo siento")) ||
         lastMessage?.content.toLowerCase().includes("**") ||
         lastMessage?.content.toLowerCase().includes("gracias") ||
         lastMessage?.content.toLowerCase().includes("suerte");

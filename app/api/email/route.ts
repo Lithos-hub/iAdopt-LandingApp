@@ -77,7 +77,7 @@ export async function POST(req: Request) {
       attachments: [
         {
           filename: "email-banner.jpg",
-          path: "https://user-images.githubusercontent.com/57297760/246323491-d1e2c9c0-d647-4e66-9f6c-81980fad6e25.jpg",
+          path: "https://user-images.githubusercontent.com/57297760/246410881-419a79cf-fa94-43ac-bf5e-4c6233180f54.jpg",
           cid: "logo",
         },
       ],
