@@ -6,11 +6,10 @@ import * as Yup from "yup";
 
 interface Props {
   onStart: (values: Record<string, string>) => void;
+  isStarting: boolean;
 }
 
-const InformationCard: FC<Props> = ({ onStart }) => {
-  const [isStarting, setIsStarting] = useState(false);
-
+const InformationCard: FC<Props> = ({ onStart, isStarting }) => {
   const validationSchema = useMemo(
     () =>
       Yup.object().shape({
@@ -76,7 +75,6 @@ const InformationCard: FC<Props> = ({ onStart }) => {
 
       <Formik
         onSubmit={(values) => {
-          setIsStarting(true);
           onStart(values);
         }}
         validateOnMount

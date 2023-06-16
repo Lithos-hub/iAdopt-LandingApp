@@ -7,13 +7,27 @@ import axios from "axios";
 import { AdopterData } from "@/interfaces";
 
 const ChatPage = ({ params }: { params: { id: string } }) => {
+  const [GPTStatusError, setGPTStatusError] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
+  const [GPTIsReady, setGPTIsReady] = useState(false);
 
   const [adopterData, setAdopterData] = useState({} as AdopterData); // [key: string]: string
   const [description, setDescription] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const onCheckGPTStatus = async (values: Record<string, string>) => {
+    const { data } = await axios.get("/api/gpt/status");
+
+    console.log(data);
+    setGPTIsReady(data.isReady);
+    setGPTStatusError(data.isReady === false);
+
+    onStart(values);
+  };
+
   const onStart = async (values: Record<string, string>) => {
+    if (!GPTIsReady) return;
+
     // Check if the user has already done the interview
     const { data } = await axios.get(`/api/link/${params.id}`);
     setAdopterData(values as AdopterData);
@@ -29,7 +43,18 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <section className="w-full h-full flex flex-col items-center justify-center">
-      {isSubmitted ? (
+      {GPTStatusError ? (
+        <section>
+          <article className="text-center flex flex-col gap-5">
+            <h2 className="text-5xl primary-gradient font-bold">
+              El chatbot no se encuentra actualmente disponible.
+            </h2>
+            <h3 className="text-xl">
+              Por favor, vuelve a intentarlo más tarde. Sentimos las molestias.
+            </h3>
+          </article>
+        </section>
+      ) : isSubmitted ? (
         <section>
           <article className="text-center flex flex-col gap-5">
             <h2 className="text-5xl primary-gradient font-bold">
@@ -55,7 +80,7 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
           />
         </Suspense>
       ) : (
-        <InformationCard onStart={onStart} />
+        <InformationCard onStart={onCheckGPTStatus} isStarting={isStarted} />
       )}
     </section>
   );

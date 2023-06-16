@@ -56,11 +56,8 @@ const ChatBot: FC<Props> = ({ animalDescription, id, adopterData }) => {
       const lastMessage = chat.at(-1);
 
       const isEnding =
-        (chat.length > 5 &&
-          lastMessage?.content.toLowerCase().includes("lo siento")) ||
-        lastMessage?.content.toLowerCase().includes("**") ||
-        lastMessage?.content.toLowerCase().includes("gracias") ||
-        lastMessage?.content.toLowerCase().includes("suerte");
+        lastMessage?.content.toLowerCase().includes("suerte") ||
+        lastMessage?.content.toLowerCase().includes("**");
 
       if (isEnding) {
         setIsEnding(true);
@@ -205,7 +202,7 @@ const ChatBot: FC<Props> = ({ animalDescription, id, adopterData }) => {
                 });
                 setChat(data.chat);
               } catch (error: unknown) {
-                throw new Error(error as string);
+                return new Error(error as string);
               } finally {
                 setIsThinking(false);
                 setIsSubmitting(false);
