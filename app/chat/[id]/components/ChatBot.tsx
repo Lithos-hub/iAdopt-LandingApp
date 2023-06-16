@@ -67,7 +67,7 @@ const ChatBot: FC<Props> = ({ animalDescription, id, adopterData }) => {
   }, [chat]);
 
   useEffect(() => {
-    if (isEnding) return;
+    if (!isEnding) return;
 
     const sendResults = async () => {
       const { data } = await axios.get(`/api/link/${id}`);
