@@ -1,12 +1,30 @@
-import Form from "./components/Form";
+import Link from "next/link";
 
-export default function HomePage() {
+import { Button } from "@/app/components";
+
+const Hero = () => {
   return (
-    <section className="flex flex-col gap-5">
-      <h3 className="primary-gradient text-center lg:text-left text-xl lg:text-4xl font-semibold">
-        ¿Cómo funciona?
-      </h3>
-      <Form />
+    <section className="z-40 h-screen max-w-screen flex flex-col items-center justify-center gap-5">
+      <h1 className="primary-gradient text-7xl lg:text-[200px] font-bold py-20">
+        <span className="text-6xl lg:text-[150px]">i</span>Adopt
+      </h1>
+      <h2 className="text-2xl tracking-wide font-light text-center">
+        Tu{" "}
+        <span className="primary-gradient font-bold">
+          asistente inteligente
+        </span>{" "}
+        para procesos de{" "}
+        <span className="primary-gradient font-bold">adopción animal</span>
+      </h2>
+      <div className="flex gap-5">
+        <Link href="/create">
+          <Button variant="secondary">Comenzar</Button>
+        </Link>
+      </div>
     </section>
   );
+};
+
+export default function HomePage() {
+  return <Hero />;
 }

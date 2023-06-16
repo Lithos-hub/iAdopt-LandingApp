@@ -5,7 +5,7 @@ import React, { FC, useMemo } from "react";
 interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   onClick?: () => void;
-  variant?: "primary" | "secondary" | "disabled";
+  variant?: "primary" | "secondary" | "success" | "disabled";
 }
 
 const Button: FC<Props> = ({ children, onClick, variant, ...rest }) => {
@@ -16,7 +16,9 @@ const Button: FC<Props> = ({ children, onClick, variant, ...rest }) => {
           onClick && "cursor-pointer"
         }`;
       case "secondary":
-        return `button button-secondary ${onClick && "cursor-pointer"}`;
+        return `button button-secondary`;
+      case "success":
+        return `button button-success`;
       case "disabled":
         return "button-disabled";
       default:
@@ -29,7 +31,9 @@ const Button: FC<Props> = ({ children, onClick, variant, ...rest }) => {
   return (
     <button
       {...rest}
-      className={`${rest.className} ${buttonClass}`}
+      className={`${rest.className ?? ""} ${buttonClass} ${
+        onClick && "cursor-pointer"
+      }`}
       onClick={onClick}
     >
       <div

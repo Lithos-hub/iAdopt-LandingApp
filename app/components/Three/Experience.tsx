@@ -10,7 +10,7 @@ import Points from "./Points";
 const Experience = () => {
   return (
     <div className="h-screen w-screen top-0 left-0 fixed">
-      <Canvas camera={{ position: [0, 40, 0], fov: 45, far: 2000 }}>
+      <Canvas camera={{ position: [0, 70, 0], fov: 45, far: 2000 }}>
         <Suspense fallback={null}>
           <motion.group
             initial={{
