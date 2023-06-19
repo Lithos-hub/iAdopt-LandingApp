@@ -10,19 +10,37 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
   const [GPTStatusError, setGPTStatusError] = useState(false);
   const [isStarted, setIsStarted] = useState(false);
   const [GPTIsReady, setGPTIsReady] = useState(false);
-
+  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
   const [adopterData, setAdopterData] = useState({} as AdopterData); // [key: string]: string
   const [description, setDescription] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const [states, setStates] = useState({
+    GPTStatusError: false,
+    isStarted: false,
+    GPTIsReady: false,
+    isCheckingStatus: false,
+    adopterData: {},
+    description: "",
+    isSubmitted: false,
+  });
+
+  const setState = (newState: Partial<typeof states>) => {
+    setStates((prev) => ({ ...prev, ...newState }));
+  };
+
   const onCheckGPTStatus = async (values: Record<string, string>) => {
-    const { data } = await axios.get("/api/gpt/status");
-
-    console.log(data);
-    setGPTIsReady(data.isReady);
-    setGPTStatusError(data.isReady === false);
-
-    onStart(values);
+    try {
+      setIsCheckingStatus(true);
+      const { data } = await axios.get("/api/gpt/status");
+      setState({ GPTIsReady: data.isReady, GPTStatusError: !data.isReady });
+      await onStart(values);
+    } catch (error) {
+      setState({ GPTStatusError: true });
+      throw error;
+    } finally {
+      setState({ isCheckingStatus: false });
+    }
   };
 
   const onStart = async (values: Record<string, string>) => {
@@ -30,14 +48,17 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
 
     // Check if the user has already done the interview
     const { data } = await axios.get(`/api/link/${params.id}`);
-    setAdopterData(values as AdopterData);
-    setDescription(data.description);
-    setIsSubmitted(data.isSubmitted);
+
+    setState({
+      adopterData: values as AdopterData,
+      description: data.description,
+      isSubmitted: data.isSubmitted,
+    });
 
     // Update the document to set isSubmitted = true
     if (!isSubmitted) {
       await axios.patch(`/api/link/${params.id}`);
-      setIsStarted(true);
+      setState({ isStarted: true });
     }
   };
 
@@ -80,7 +101,11 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
           />
         </Suspense>
       ) : (
-        <InformationCard onStart={onCheckGPTStatus} isStarting={isStarted} />
+        <InformationCard
+          onStart={onCheckGPTStatus}
+          isStarting={isStarted}
+          isCheckingStatus={isCheckingStatus}
+        />
       )}
     </section>
   );

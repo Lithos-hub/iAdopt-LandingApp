@@ -7,9 +7,14 @@ import * as Yup from "yup";
 interface Props {
   onStart: (values: Record<string, string>) => void;
   isStarting: boolean;
+  isCheckingStatus: boolean;
 }
 
-const InformationCard: FC<Props> = ({ onStart, isStarting }) => {
+const InformationCard: FC<Props> = ({
+  onStart,
+  isStarting,
+  isCheckingStatus,
+}) => {
   const validationSchema = useMemo(
     () =>
       Yup.object().shape({
@@ -130,11 +135,19 @@ const InformationCard: FC<Props> = ({ onStart, isStarting }) => {
               </p>
               <div className="flex justify-center">
                 <Button
-                  variant={isStarting || !isValid ? "disabled" : "primary"}
-                  disabled={isStarting || !isValid}
+                  variant={
+                    isStarting || !isValid || isCheckingStatus
+                      ? "disabled"
+                      : "primary"
+                  }
+                  disabled={isStarting || !isValid || isCheckingStatus}
                   type="submit"
                 >
-                  Comenzar
+                  {isCheckingStatus
+                    ? "Comprobando que la IA se encuentre operativa..."
+                    : isStarting
+                    ? "Cargando..."
+                    : "Comenzar"}
                 </Button>
               </div>
             </div>
