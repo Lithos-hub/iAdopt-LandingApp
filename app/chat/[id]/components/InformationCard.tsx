@@ -8,12 +8,14 @@ interface Props {
   onStart: (values: Record<string, string>) => void;
   isStarting: boolean;
   isCheckingStatus: boolean;
+  isGPTError: boolean;
 }
 
 const InformationCard: FC<Props> = ({
   onStart,
   isStarting,
   isCheckingStatus,
+  isGPTError,
 }) => {
   const validationSchema = useMemo(
     () =>

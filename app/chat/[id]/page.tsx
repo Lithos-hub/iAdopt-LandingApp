@@ -7,20 +7,12 @@ import axios from "axios";
 import { AdopterData } from "@/interfaces";
 
 const ChatPage = ({ params }: { params: { id: string } }) => {
-  const [GPTStatusError, setGPTStatusError] = useState(false);
-  const [isStarted, setIsStarted] = useState(false);
-  const [GPTIsReady, setGPTIsReady] = useState(false);
-  const [isCheckingStatus, setIsCheckingStatus] = useState(false);
-  const [adopterData, setAdopterData] = useState({} as AdopterData); // [key: string]: string
-  const [description, setDescription] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-
   const [states, setStates] = useState({
     GPTStatusError: false,
     isStarted: false,
     GPTIsReady: false,
     isCheckingStatus: false,
-    adopterData: {},
+    adopterData: {} as AdopterData,
     description: "",
     isSubmitted: false,
   });
@@ -31,10 +23,10 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
 
   const onCheckGPTStatus = async (values: Record<string, string>) => {
     try {
-      setIsCheckingStatus(true);
+      setState({ isCheckingStatus: true });
       const { data } = await axios.get("/api/gpt/status");
       setState({ GPTIsReady: data.isReady, GPTStatusError: !data.isReady });
-      await onStart(values);
+      if (data.isReady) await onStart(values);
     } catch (error) {
       setState({ GPTStatusError: true });
       throw error;
@@ -44,8 +36,6 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
   };
 
   const onStart = async (values: Record<string, string>) => {
-    if (!GPTIsReady) return;
-
     // Check if the user has already done the interview
     const { data } = await axios.get(`/api/link/${params.id}`);
 
@@ -56,7 +46,7 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
     });
 
     // Update the document to set isSubmitted = true
-    if (!isSubmitted) {
+    if (!states.isSubmitted) {
       await axios.patch(`/api/link/${params.id}`);
       setState({ isStarted: true });
     }
@@ -64,7 +54,7 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <section className="w-full h-full flex flex-col items-center justify-center">
-      {GPTStatusError ? (
+      {states.GPTStatusError ? (
         <section>
           <article className="text-center flex flex-col gap-5">
             <h2 className="text-5xl primary-gradient font-bold">
@@ -75,7 +65,7 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
             </h3>
           </article>
         </section>
-      ) : isSubmitted ? (
+      ) : states.isSubmitted ? (
         <section>
           <article className="text-center flex flex-col gap-5">
             <h2 className="text-5xl primary-gradient font-bold">
@@ -92,19 +82,20 @@ const ChatPage = ({ params }: { params: { id: string } }) => {
             </div>
           </article>
         </section>
-      ) : isStarted ? (
+      ) : states.isStarted ? (
         <Suspense fallback={null}>
           <ChatBot
-            animalDescription={description}
-            adopterData={adopterData}
+            animalDescription={states.description}
+            adopterData={states.adopterData}
             id={params.id}
           />
         </Suspense>
       ) : (
         <InformationCard
           onStart={onCheckGPTStatus}
-          isStarting={isStarted}
-          isCheckingStatus={isCheckingStatus}
+          isStarting={states.isStarted}
+          isCheckingStatus={states.isCheckingStatus}
+          isGPTError={states.GPTStatusError}
         />
       )}
     </section>
