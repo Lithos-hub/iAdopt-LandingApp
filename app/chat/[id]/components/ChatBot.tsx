@@ -57,7 +57,11 @@ const ChatBot: FC<Props> = ({ animalDescription, id, adopterData }) => {
 
       const isEnding =
         lastMessage?.content.toLowerCase().includes("suerte") ||
-        lastMessage?.content.toLowerCase().includes("**");
+        lastMessage?.content.toLowerCase().includes("**") ||
+        lastMessage?.content.toLowerCase().includes("adios") ||
+        lastMessage?.content.toLowerCase().includes("buen día") ||
+        lastMessage?.content.toLowerCase().includes("gracias por tu tiempo") ||
+        chat.length > 15;
 
       if (isEnding) {
         setIsEnding(true);

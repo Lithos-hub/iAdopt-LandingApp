@@ -45,12 +45,11 @@ export async function POST(req: Request) {
   
           Asegúrate de que contesta todo lo que pides.
   
-          Cuando consideres que tienes suficiente información o que el candidato NO ES VÁLIDO, quiero que termines la entrevista. Para ello, quiero que escribas dos asteriscos (**).
+          Quiero que al terminar la entrevista escribas dos asteriscos (**) o 'Mucha suerte' para poder finalizar la entrevista de forma programática.
         `,
         },
         ...messages,
       ],
-      stop: ["**"],
     });
 
     const gptResponse = completion.data.choices[0].message;
