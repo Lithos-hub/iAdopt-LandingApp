@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const { formattedChat } = await req.json();
 
   const completion = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
+    model: "gpt-4",
     max_tokens: 250,
     temperature: 0.5,
     messages: [
@@ -30,5 +30,3 @@ export async function POST(req: Request) {
 
   return NextResponse.json(gptResponse);
 }
-
-// Description of a Border Collie of 4 months old
