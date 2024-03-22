@@ -11,7 +11,7 @@ const openai = new OpenAIApi(configuration);
 export async function GET() {
   try {
     await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4",
       max_tokens: 10,
       temperature: 0.5,
       messages: [
